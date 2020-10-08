@@ -59,7 +59,7 @@ def gameLoop(sock):
       print (clients)
       for c in clients:
          player = {}
-         clients[c]['position'] = {"X": random.random(), "Y": random.random(), "Z": random.random()}
+         #clients[c]['position'] = {"X": random.random(), "Y": random.random(), "Z": random.random()}
          player['id'] = str(c)
          player['position'] = clients[c]['position']
          GameState['players'].append(player)
@@ -68,7 +68,7 @@ def gameLoop(sock):
       for c in clients:
          sock.sendto(bytes(s,'utf8'), (c[0],c[1]))
       clients_lock.release()
-      time.sleep(1/30)
+      time.sleep(1/10)
 
 def main():
    port = 12345
