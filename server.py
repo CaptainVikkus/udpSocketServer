@@ -16,13 +16,15 @@ def connectionLoop(sock):
       data, addr = sock.recvfrom(1024)
       data = str(data)
       if addr in clients:
-         if 'heartbeat' in data:
+         if 'heartbeat' in data: #still connected
             clients[addr]['lastBeat'] = datetime.now()
+         if 'position' in data: #position update
+             clients[addr]['position'] = data[addr]['position']
       else:
          if 'connect' in data:
             clients[addr] = {}
             clients[addr]['lastBeat'] = datetime.now()
-            clients[addr]['color'] = 0
+            clients[addr]['position'] = 0
             ## send list of clients to the new client
             clientAddresses = {"cmd": 0, "player": [] }
             for c in clients:
@@ -57,16 +59,16 @@ def gameLoop(sock):
       print (clients)
       for c in clients:
          player = {}
-         clients[c]['color'] = {"R": random.random(), "G": random.random(), "B": random.random()}
+         clients[c]['position'] = {"X": random.random(), "Y": random.random(), "Z": random.random()}
          player['id'] = str(c)
-         player['color'] = clients[c]['color']
+         player['position'] = clients[c]['position']
          GameState['players'].append(player)
       s=json.dumps(GameState)
       print(s)
       for c in clients:
          sock.sendto(bytes(s,'utf8'), (c[0],c[1]))
       clients_lock.release()
-      time.sleep(1)
+      time.sleep(1/30)
 
 def main():
    port = 12345
