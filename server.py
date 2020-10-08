@@ -26,13 +26,13 @@ def connectionLoop(sock):
             clients[addr]['lastBeat'] = datetime.now()
             clients[addr]['position'] = 0
             ## send list of clients to the new client
-            clientAddresses = {"cmd": 0, "player": [] }
-            for c in clients:
-                clientAddresses["player"].append(str(c))
+            clientAddresses = {"cmd": 0, "player": []}
+            for c in clients: #add all existing client id
+                clientAddresses["player"].append({ 'id' : str(c)})
             m = json.dumps(clientAddresses)
             sock.sendto(bytes(m, 'utf8'), (addr[0], addr[1]))
             ## send new client to all clients
-            message = {"cmd": 0,"player": [str(addr)] }
+            message = {"cmd": 0,"player": {"id": str(addr)} }
             m = json.dumps(message)
             for c in clients:
                 if c != addr:
