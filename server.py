@@ -14,17 +14,17 @@ clients = {}
 def connectionLoop(sock):
    while True:
       data, addr = sock.recvfrom(1024)
-      data = str(data)
+      data = json.loads(data);
       if addr in clients:
          if 'heartbeat' in data: #still connected
             clients[addr]['lastBeat'] = datetime.now()
          if 'position' in data: #position update
-             clients[addr]['position'] = data[addr]['position']
+             clients[addr]['position'] = data['position']
       else:
          if 'connect' in data:
             clients[addr] = {}
             clients[addr]['lastBeat'] = datetime.now()
-            clients[addr]['position'] = 0
+            clients[addr]['position'] = {}
             ## send list of clients to the new client
             clientAddresses = {"cmd": 0, "player": []}
             for c in clients: #add all existing client id
