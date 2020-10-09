@@ -16,8 +16,8 @@ def connectionLoop(sock):
       data, addr = sock.recvfrom(1024)
       print(str(data));
       if addr in clients:
-         if 'heartbeat' in str(data): #still connected
-            jdata = json.loads(data);
+         jdata = json.loads(data);
+         if jdata['heartbeat'] == 1: #still connected
             clients[addr]['lastBeat'] = datetime.now()
             clients[addr]['position']['X'] = jdata['X']
             clients[addr]['position']['Y'] = jdata['Y']
@@ -34,7 +34,7 @@ def connectionLoop(sock):
             m = json.dumps(clientAddresses)
             sock.sendto(bytes(m, 'utf8'), (addr[0], addr[1]))
             ## send new client to all clients
-            message = {"cmd": 0,"player": {"id": str(addr)} }
+            message = {"cmd": 0,"player": [{"id": str(addr)}] }
             m = json.dumps(message)
             for c in clients:
                 if c != addr:
