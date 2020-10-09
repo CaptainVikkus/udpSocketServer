@@ -11,6 +11,11 @@ connected = 0
 
 clients = {}
 
+class Heartbeat() :
+    heartbeat = 1
+    class Position():
+        X ,Y, Z
+
 def connectionLoop(sock):
    while True:
       data, addr = sock.recvfrom(1024)
@@ -19,9 +24,10 @@ def connectionLoop(sock):
       if addr in clients:
          if 'heartbeat' in data: #still connected
             clients[addr]['lastBeat'] = datetime.now()
-         if 'position' in data: #position update
-             clients[addr]['position'] = data['position']
-      else:
+            clients[addr]['position']['X'] = data['X']
+            clients[addr]['position']['Y'] = data['Y']
+            clients[addr]['position']['Z'] = data['Z']
+     else:
          if 'connect' in data:
             clients[addr] = {}
             clients[addr]['lastBeat'] = datetime.now()
