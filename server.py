@@ -11,11 +11,6 @@ connected = 0
 
 clients = {}
 
-class Heartbeat() :
-    heartbeat = 1
-    class Position():
-        X ,Y, Z
-
 def connectionLoop(sock):
    while True:
       data, addr = sock.recvfrom(1024)
