@@ -16,7 +16,7 @@ def connectionLoop(sock):
       data, addr = sock.recvfrom(1024)
       print(str(data));
       if addr in clients:
-         if 'heartbeat' in data: #still connected
+         if 'heartbeat' in str(data): #still connected
             jdata = json.loads(data);
             clients[addr]['lastBeat'] = datetime.now()
             clients[addr]['position']['X'] = jdata['X']
