@@ -14,14 +14,14 @@ clients = {}
 def connectionLoop(sock):
    while True:
       data, addr = sock.recvfrom(1024)
-      print(str(data)[1:]);
-      data = json.loads(str(data)[1:]);
+      print(str(data));
+      jdata = json.loads(data);
       if addr in clients:
          if 'heartbeat' in data: #still connected
             clients[addr]['lastBeat'] = datetime.now()
-            clients[addr]['position']['X'] = data['X']
-            clients[addr]['position']['Y'] = data['Y']
-            clients[addr]['position']['Z'] = data['Z']
+            clients[addr]['position']['X'] = jdata['X']
+            clients[addr]['position']['Y'] = jdata['Y']
+            clients[addr]['position']['Z'] = jdata['Z']
       else:
          if 'connect' in data:
             clients[addr] = {}
