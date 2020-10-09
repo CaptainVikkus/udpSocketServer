@@ -23,7 +23,7 @@ def connectionLoop(sock):
             clients[addr]['position']['Y'] = jdata['Y']
             clients[addr]['position']['Z'] = jdata['Z']
       else:
-         if 'connect' in data:
+         if 'connect' in str(data):
             clients[addr] = {}
             clients[addr]['lastBeat'] = datetime.now()
             clients[addr]['position'] = {}
