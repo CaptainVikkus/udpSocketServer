@@ -28,7 +28,7 @@ def connectionLoop(sock):
             clients[addr]['lastBeat'] = datetime.now()
             clients[addr]['position'] = {}
             ## send list of clients to the new client
-            clientAddresses = {"cmd": 3, "player": [], "myID": addr}
+            clientAddresses = {"cmd": 3, "player": [], "myID": str(addr)}
             for c in clients: #add all existing client id
                 clientAddresses["player"].append({ 'id' : str(c)})
             m = json.dumps(clientAddresses)
